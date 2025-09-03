@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giftera — Toko Bucket Online</title>
+  <meta name="description" content="E-commerce sederhana dengan fitur keranjang dan checkout untuk produk bucket: bunga artificial, bunga satin, snack, dan uang." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <div class="brand-logo"><span>G</span></div>
+        <span>Giftera</span>
+      </a>
+      <div class="nav-links">
+        <a href="#shop">Produk</a>
+        <a href="#contact">Kontak</a>
+        <a href="#about">Tentang</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="openCart">🛒 <span id="cartCount">0</span></button>
+        <button class="btn btn-primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Belanja Sekarang</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="container hero">
+    <div class="hero-card">
+      <h1>Giftera — Toko Bucket Online</h1>
+      <p class="subtitle">Kirimkan kebahagiaan dalam bentuk <b>bucket</b> cantik: <span class="pill">Bunga Artificial</span> · <span class="pill">Bunga Satin</span> · <span class="pill">Snack</span> · <span class="pill">Uang</span>. Desain elegan, siap kirim, dan bisa pesan kustom.</p>
+      <div class="flex">
+        <button class="btn btn-primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Lihat Produk</button>
+        <a class="btn btn-ghost" href="#contact">Chat Admin</a>
+      </div>
+    </div>
+    <img src="https://i.pinimg.com/1200x/20/7e/b7/207eb7d84d400cccaad33930d1e30de0.jpg" alt="Bucket gift hero"/>
+  </header>
+
+  <!-- SHOP -->
+  <section id="shop" class="container">
+    <div class="toolbar">
+      <div class="flex" id="filters">
+        <button class="chip is-active" data-filter="all">Semua</button>
+        <button class="chip" data-filter="artificial">Bunga Artificial</button>
+        <button class="chip" data-filter="satin">Bunga Satin</button>
+        <button class="chip" data-filter="snack">Bucket Snack</button>
+        <button class="chip" data-filter="money">Bucket Uang</button>
+      </div>
+      <div class="search">
+        <span class="icon">🔎</span>
+        <input id="q" placeholder="Cari produk…"/>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="container" style="margin-bottom:50px">
+    <div class="hero-card">
+      <h2>Tentang Giftera</h2>
+      <p class="subtitle">Kami spesialis bucket modern untuk ulang tahun, wisuda, tunangan, hingga ucapan terima kasih. Semua dibuat dengan material premium dan finishing rapi.</p>
+      <ul>
+        <li>🛵 Same-day delivery area tertentu (tanyakan admin).</li>
+        <li>🎁 Bisa request kartu ucapan gratis.</li>
+        <li>💳 Pembayaran: COD, Transfer Bank, e-Wallet.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container" style="margin-bottom:70px">
+    <div class="hero-card">
+      <h2>Kontak</h2>
+      <p class="subtitle">Butuh custom desain? Hubungi kami:</p>
+      <div class="flex">
+        <span class="pill">WhatsApp: 0878-7867-5345</span>
+        <span class="pill">Instagram: @giftera.id</span>
+        <span class="pill">Email: giftera.store@gimail.com</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="container text-center">© <span id="y"></span> Giftera - gift that speaks form the heart</footer>
+
+  <!-- CART DRAWER -->
+  <div class="drawer" id="drawer">
+    <div class="backdrop" id="closeCart" aria-label="Tutup keranjang"></div>
+    <aside class="panel" role="dialog" aria-label="Keranjang Belanja">
+      <header>
+        <strong>Keranjang</strong>
+        <button class="btn btn-ghost" id="closeCartBtn">✕</button>
+      </header>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><strong id="subtotal">Rp 0</strong></div>
+        <div class="row"><span>Ongkir</span><span id="shipping">Rp 0</span></div>
+        <div class="row"><span><small class="muted">Gratis ongkir di atas Rp150.000</small></span></div>
+        <div class="row" style="font-size:18px"><strong>Total</strong><strong id="grand">Rp 0</strong></div>
+        <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal" id="checkoutModal">
+    <div class="backdrop" id="closeCheckout"></div>
+    <div class="modal-card">
+      <header class="flex" style="justify-content:space-between; padding:14px 18px; border-bottom:1px solid rgba(255,255,255,.1)">
+        <strong>Checkout</strong>
+        <button class="btn btn-ghost" id="xCheckout">✕</button>
+      </header>
+      <div class="modal-body">
+        <form id="checkoutForm">
+          <div class="full">
+            <div class="pill">Ringkasan Pesanan: <span id="sumCount">0 item</span> — <span id="sumTotal">Rp 0</span></div>
+          </div>
+          <div>
+            <label>Nama Lengkap</label>
+            <input required name="name" placeholder="Nama penerima" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input required type="email" name="email" placeholder="nama@email.com" />
+          </div>
+          <div class="full">
+            <label>Alamat Pengiriman</label>
+            <textarea required name="address" placeholder="Jalan, No, Kel/Desa, Kecamatan, Kota/Kab, Kode Pos"></textarea>
+          </div>
+          <div>
+            <label>Metode Pembayaran</label>
+            <select name="payment" required>
+              <option value="COD">COD (Bayar di tempat)</option>
+              <option value="Transfer Bank">Transfer Bank</option>
+              <option value="E-Wallet">E-Wallet</option>
+            </select>
+          </div>
+          <div>
+            <label>Catatan (opsional)</label>
+            <input name="note" placeholder="Warna pita, kartu ucapan, dll." />
+          </div>
+          <div class="full flex" style="justify-content:space-between; gap:12px">
+            <button type="button" class="btn btn-ghost" id="backToCart">Kembali</button>
+            <button class="btn btn-primary" type="submit">Buat Pesanan</button>
+          </div>
+        </form>
+        <div id="thanks" class="hidden">
+          <div class="hero-card">
+            <h3>Terima kasih! 🎉</h3>
+            <p>Pesanan kamu sudah kami terima.</p>
+            <p><b>ID Pesanan:</b> <span id="orderId"></span></p>
+            <p>Kamu akan menerima konfirmasi ke email yang kamu isi.</p>
+            <div class="flex">
+              <button class="btn btn-primary" id="closeThanks">Selesai</button>
+              <button class="btn btn-ghost" id="printOrder">Cetak Ringkasan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
